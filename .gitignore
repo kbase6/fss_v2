@@ -1,0 +1,18 @@
+# Exclude the code file generated from the compiler
+generated_code.cpp
+
+# Exclude compiled binaries
+*.o      # Object files
+*.so     # Shared libraries (Linux/Unix)
+*.dll    # Dynamic-link libraries (Windows)
+*.exe    # Executable files (Windows)
+*.out    # Output files
+*.a      # Static library archives
+*.bin    # Binary files
+*.elf    # Executable and Linkable Format
+
+# CMake-generated binaries
+/build/
+
+# Makefile build artifacts
+*.d

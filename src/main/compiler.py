@@ -25,11 +25,34 @@ def is_numeric(value):
         return False
     
 def generate_cpp_prefix():
-    includes = '#include <iostream>\n'
+    includes = [
+        '<iostream>',
+        '<functional>',
+        '<map>',
+        '<string>',
+        '<vector>',
+        '"../comm/comm.hpp"',
+        '"../fss-base/dcf/distributed_comparison_function.hpp"',
+        '"../fss-base/ddcf/dual_dcf.hpp"',
+        '"../fss-base/dpf/distributed_point_function.hpp"',
+        '"../fss-base/prg/prg.hpp"',
+        '"../fss-gate/comp/integer_comparison.hpp"',
+        '"../fss-gate/fm-index/fss_fmi.hpp"',
+        '"../fss-gate/internal/fsskey_io.hpp"',
+        '"../fss-gate/rank/fss_rank.hpp"',
+        '"../fss-gate/zt/zero_test_dpf.hpp"',
+        '"../tools/secret_sharing.hpp"',
+        '"../tools/tools.hpp"',
+        '"../utils/file_io.hpp"',
+        '"../utils/utils.hpp"'
+        ]
     
-    # TODO: Add necessary includes
+    prefix = ''
+    for item in includes:
+        prefix += '#include ' + item + '\n' 
     
-    return includes
+    prefix += '\n'
+    return prefix
     
 def generate_cpp_main(functions):
     """
