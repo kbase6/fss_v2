@@ -1,4 +1,7 @@
 import json 
+import sys
+import subprocess
+import os
 
 def parse_json(json_str):
     """
@@ -22,7 +25,7 @@ def is_numeric(value):
         return False
     
 def generate_cpp_prefix():
-    includes = '#include <iostream>/n'
+    includes = '#include <iostream>\n'
     
     # TODO: Add necessary includes
     
@@ -32,7 +35,7 @@ def generate_cpp_main(functions):
     """
     Generate main function of the C++ code and return the final computed value
     """
-    cpp_main = "int main() {/n"
+    cpp_main = "int main() {\n"
     
     # Dictionary to keep track fo variable declarations
     variables = {}
@@ -53,8 +56,8 @@ def generate_cpp_main(functions):
             elif is_numeric(param):
                 resolved_params.append(param)
             else:
-               resolved_params.append(param) # Assume it is a variable defined elsewhere
-               
+                resolved_params.append(param) # Assume it is a variable defined elsewhere
+
         # Create the variable declaration line
         param_str = ", ".join(resolved_params)
         cpp_main += f"    auto {name} = {func_name}({param_str});\n"
@@ -91,7 +94,7 @@ def compile_code(source_file, output_file):
     if not os.path.exists(source_file):
         sys.exit(1)
     
-    comile_cmd = ["g++", "-02", source_file, "-o", output_file]
+    compile_cmd = ["g++", "-02", source_file, "-o", output_file]
     compile_proc = subprocess.run(compile_cmd, capture_output = True, text = True)
     
     if compile_proc.returncode != 0:
@@ -104,16 +107,38 @@ def compile_code(source_file, output_file):
     else:
         print(run_proc.stdout)
 
-def main():
+def compiler(json_input):
     data = parse_json(json_input)
     if not data:
         return
     
-    cpp_code = geenrate_code(data)
+    cpp_code = generate_code(data)
     
     with open("generated_code.cpp", "w") as file:
         file.write(cpp_code)
         
 
 if __name__ == "__main__":
-    main()
+    example_json = """
+    {
+        "functions": [
+            {
+                "name": "func1",
+                "function": "add",
+                "parameters": {
+                    "x1": "10",
+                    "x2": "3"
+                }
+            },
+            {
+                "name": "func2",
+                "function": "mult",
+                "parameters": {
+                    "x1": "func1",
+                    "x2": "10"
+                }
+            }
+        ]
+    }
+    """
+    compiler(example_json)
